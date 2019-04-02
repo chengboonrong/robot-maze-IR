@@ -15,7 +15,6 @@ th_3 = 400  # right
 th_4 = 300  # right most
 
 actions = []
-checkpoint = 0
 
 while True:
     try:
