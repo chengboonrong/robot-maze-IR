@@ -14,7 +14,9 @@ th_2 = 500  # middle
 th_3 = 400  # right
 th_4 = 300  # right most
 
+# Left_hand_rule, so no turn right
 actions = []
+checkpoints = []
 
 while True:
     try:
@@ -24,8 +26,8 @@ while True:
         # delay
         time.sleep(0.5)
 
-
-        # to make sure there is no left or right junction
+ 
+        # when there is no T-junction
         condition_2 = True
 
         if lt.data[2] > th_2:
@@ -40,16 +42,18 @@ while True:
                     print(lt.data, 'slightly left')
                     mot.command("left", 4, 0.1)
 
-                # what is this for? 
-                elif lt.data[3] < th_3 and lt.data[4] < th_4 and lt.data[0] > th_0: # black is detected on right sensors
-                    if(lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2):
+                # when met a right corner or T-junction at right
+                elif lt.data[3] < th_3 and lt.data[4] < th_4 and lt.data[0] > th_0:
+                    # it is a right corner
+                    if(lt.data[2] > th_2):
                         condition_2=False
+                    # it is a T-junction at right
                     else:
                         mot.command("forward", 4, 0.2)
                         print(lt.data, 'junction at right and speed up')
                         # append S
                         actions.append("S")
-                        checkPoint(actions)
+                        checkPoint(actions, checkpoints)
 
                 else:
                     condition_2 = False
@@ -74,7 +78,7 @@ while True:
             print(lt.data, 'find route and go straight')
             # append B
             actions.append("B")
-            checkPoint(actions)
+            checkPoint(actions, checkpoints)
 
 
         elif lt.data[0] < th_0 or lt.data[1] < th_1 and lt.data[2] < th_2:
@@ -89,21 +93,21 @@ while True:
             print(lt.data, 'find route and go straight')
             # append L
             actions.append("L")
-            checkPoint(actions)
+            checkPoint(actions, checkpoints)
 
-        elif lt.data[3] < th_3 or lt.data[4] < th_4 and lt.data[2] < th_2:
+        elif lt.data[2] < th_2 or lt.data[3] < th_3 and lt.data[4] < th_4:
             print(lt.data, 'stop and turn right')
             time.sleep(1)
             # this condition utk pastikan jika terlajak yang tengah sensor 0 dan 1 masih ada utk stop
-            while lt.data[2] > th_2 and lt.data[0] > th_0 and lt.data[1] > th_1
+            while lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[4] > th_2:
                 print(lt.data, "turn right for T-Junction")
                 # check if the turn right a quite hard so need to decrease the duration[turn right sikit-sikit]
                 mot.command("right", 4, 0.2)
                 time.sleep(0.5)
             print(lt.data, 'find route and go straight')
-            # append R
+            # append L
             actions.append("R")
-            checkPoint(actions)
+            checkPoint(actions, checkpoints)
 
         # all black
         elif lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:

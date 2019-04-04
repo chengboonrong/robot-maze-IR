@@ -1,18 +1,28 @@
-# arr = ["L", "R", "B", "L", "B" , "L"]
-
-# right-hand rule
-def checkPoint(arr):
+def LHR(arr, ckp):
 	str1 = ''.join(arr[-3:])
 	if str1 == "LBL":
 		del arr[-3:]
 		arr.append("S")
-	elif str1 == "LBR", "RBL", "SBS":
+		ckp.append("S")
+	elif str1 == "LBR" or str1 == "RBL" or str1 == "SBS":
 		del arr[-3:]
 		arr.append("B")
-	elif str1 == "LBS" , "SBL":
+		ckp.append("B")
+	elif str1 == "LBS" or str1 == "SBL":
 		del arr[-3:]
 		arr.append("R")
+		ckp.append("R")
 
-# shortened(arr)
-# arr.reverse()
-# print(arr)
+def RHR(arr, ckp):
+	str1 = ''.join(arr[-3:])
+	if str1 == "RBR":
+		del arr[-3:]
+		arr.append("S")
+		ckp.append("S")
+	elif str1 == "RBL" or str1 == "LBR" or str1 == "SBS":
+		del arr[-3:]
+		arr.append("B")
+	elif str1 == "RBS" or str1 == "SBR":
+		del arr[-3:]
+		arr.append("L")
+		ckp.append("L")
