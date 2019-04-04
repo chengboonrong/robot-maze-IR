@@ -26,3 +26,12 @@ def RHR(arr, ckp):
 		del arr[-3:]
 		arr.append("L")
 		ckp.append("L")
+
+def back_travel(arr):
+	for i in range(len(arr)):
+		if arr[i] == "L":
+			arr[i] = "R"
+		elif arr[i] == "R":
+			arr[i] = "L"	
+	arr.reverse()
+	return arr
