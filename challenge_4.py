@@ -114,12 +114,20 @@ try:
             checkPoint(actions, checkpoints)
 
         # all black
-        elif lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
-            print(lt.data, 'Reach END')
-            time.sleep(1)
-            start = False
-            end = True
-
+                elif lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
+            mot.command("forward", 2, 0.2)
+            # checking if it is still black at the front
+            if lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
+                mot.command("forward", 2, 0.2)
+                # last check if it is still black at the front
+                if lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
+                    print(lt.data, 'Reach END')
+                    time.sleep(1)
+                    start = False
+                    end = True
+                    # make a U-turn
+                    mot.command("backward", 6, 0.4) # can change this part ikut kesesuaian
+                    mot.command("right", 5, 0.5) # can change this part ikut kesesuaian
 
     while end:
         # to make sure the received data are all integer
