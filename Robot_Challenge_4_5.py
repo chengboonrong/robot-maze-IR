@@ -261,6 +261,8 @@ try:
 
             else:
                 print(lt.data, "Maybe there have other line tracker reading")
+        else:
+            end = False
 
 
 except KeyboardInterrupt:
