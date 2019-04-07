@@ -20,8 +20,6 @@ end = False
 # Left_hand_rule, so no turn right
 actions = []
 checkpoints = []
-# just added the checkpoint
-new_checkpoints = ['S', 'R', 'L', 'L', 'R', 'R', 'L']
 count = 0
 
 
@@ -252,8 +250,8 @@ try:
             if lt.data[0] < th_0 and lt.data[1] < th_1 or lt.data[3] < th_3 and lt.data[4] < th_4:
                 time.sleep(0.5)
                 print(lt.data, "Junction on right or left")
-                if count < len(new_checkpoints):
-                    obj = new_checkpoints[count]
+                if count < len(checkpoints):
+                    obj = checkpoints[count]
                     shortest(obj)
                     count += 1
                 else:
