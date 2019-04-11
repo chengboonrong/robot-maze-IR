@@ -113,8 +113,8 @@ try:
         time.sleep(0.2)
         print(actions)
 
+    back_travel(actions)
     while end:
-        back_travel(actions)
         # to make sure the received data are all integer
         if type(lt.data) == int:
             continue
@@ -155,7 +155,7 @@ try:
         # delay
         time.sleep(0.5)
 
-        # all black
+        # all white
         if lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[4] > th_4:
             print(lt.data, 'Reach END')
             end = False

@@ -3,7 +3,7 @@ from motor import motor
 import time
 from rules import LHR, back_travel
 
-### Alphabot-PiZero-06  ###
+#### Alphabot-PiZero-06 ### dont choose 6
 address = "192.168.0.106" 
 ###########################
 mot = motor(address)
@@ -90,7 +90,13 @@ try:
 
       time.sleep(0.2)
 
+  ################################
+  print(actions)
   print("FROM END TO START")
+  back_travel(actions)
+  print(actions)
+  ################################
+  
   while end:
     if type(lt.data) == int:
             continue
@@ -127,6 +133,8 @@ try:
       elif lt.data[1] < th_1:
         print(lt.data, 'slightly left')
         mot.command("left", 4, 0.3)
+
+      # elif all white at START
     
 
 except KeyboardInterrupt:
