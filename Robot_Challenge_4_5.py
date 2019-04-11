@@ -1,18 +1,18 @@
 from line_tracker import line_tracker
 from motor import motor
 import time
-from rules import checkPoint
+from rules import LHR
 
-address = "192.168.0.100"  # Alphabot-PiZero-00
+address = "192.168.0.106"  # Alphabot-PiZero-00
 mot = motor(address)
 lt = line_tracker(address)
 lt.start()
 
-th_0 = 200  # left most
-th_1 = 400  # left
-th_2 = 500  # middle
-th_3 = 400  # right
-th_4 = 300  # right most
+th_0 = 350  # left most
+th_1 = 350  # left
+th_2 = 450  # middle
+th_3 = 350  # right
+th_4 = 350  # right most
 
 start = True
 end = False
@@ -70,21 +70,19 @@ try:
 
                 # slightly right till it find line detected by lt_2 or lt_1 or lt_0
                 if lt.data[2] > th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
-                    while lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2:
-                        print(lt.data, 'slightly right')
-                        mot.command("right", 4, 0.1)
+                    print(lt.data, 'slightly right')
+                    mot.command("right", 4, 0.1)
 
                 # slightly left till it find line detected by lt_2 or lt_3 or lt_4
                 elif lt.data[2] > th_2 and lt.data[1] < th_1 or lt.data[0] < th_0:
-                    while lt.data[4] > th_0 and lt.data[3] > th_1 and lt.data[2] > th_2:
-                        print(lt.data, 'slightly left')
-                        mot.command("left", 4, 0.1)
+                    print(lt.data, 'slightly left')
+                    mot.command("left", 4, 0.1)
 
-                # when it totally lost from the line then take action to backward till find line.
-                elif lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[4] > th_4:
-                    while lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[4] > th_4:
-                        print(lt.data, 'backward till find at least 1 line tracker detect line')
-                        mot.command("backward", 4, 0.2)
+                # # when it totally lost from the line then take action to backward till find line.
+                # elif lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[4] > th_4:
+                #     while lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[4] > th_4:
+                #         print(lt.data, 'backward till find at least 1 line tracker detect line')
+                #         mot.command("backward", 4, 0.2)
 
                 else:
                     # this make condition_2 become false and exit from the while loop
@@ -95,7 +93,8 @@ try:
             # while condition lt 2 < th_2 and there is no junction at left and right, Just Go Straight
             while lt.data[2] < th_2 and lt.data[0] > th_0 and lt.data[4] > th_4:
                 print(lt.data, 'just go straight because there is no junction on left of right')
-                mot.command("forward", 5, 1)
+                mot.command("forward", 6, 0.5)
+                time.sleep(0.5)
 
             # when it detect left junction, so it will take action to turn left
             if lt.data[2] < th_2 and lt.data[1] < th_1 or lt.data[0] < th_0:
@@ -112,7 +111,7 @@ try:
                 print(lt.data, 'find route and go straight')
                 # append L into the checkpoint function
                 actions.append("L")
-                checkPoint(actions, checkpoints)
+                LHR(actions, checkpoints)
 
             # After meet right junction with no left junction,it will check the straight path
             elif lt.data[2] < th_2 and lt.data[3] < th_3 and lt.data[4] < th_4 and lt.data[0] > th_0:
@@ -142,9 +141,9 @@ try:
                             mot.command("right", 4, 0.2)
                             time.sleep(0.5)
                         print(lt.data, 'find route and go straight')
-                        # append R into the checkpoint function
+                        # append R into the LHR function
                         actions.append("R")
-                        checkPoint(actions, checkpoints)
+                        LHR(actions, checkpoints)
                     else:
                         # just put this if the data that we not expected
                         print(lt.data, "Maybe not turn right that we don't know DANGER ")
@@ -153,7 +152,7 @@ try:
                     # it mean if have a line after go straight just now, so just go straight
                     print("junction at right and there is straight path")
                     actions.append("S")
-                    checkPoint(actions, checkpoints)
+                    LHR(actions, checkpoints)
 
             # All white, backward till meet a single line, then make U- turn while lt.data[0] > th_0 & lt.data[1] > th_1
             elif lt.data[0] > th_0 and lt.data[1] > th_1 and lt.data[2] > th_2 and lt.data[3] > th_3 and lt.data[
@@ -172,14 +171,14 @@ try:
                         mot.command("right", 4, 0.2)
                         time.sleep(0.5)
                     print(lt.data, 'find route and go straight')
-                    # append B to the checkpoint function
+                    # append B to the LHR function
                     actions.append("B")
-                    checkPoint(actions, checkpoints)
+                    LHR(actions, checkpoints)
                 else:
                     # just be aware and get know maybe there is an expected input to the system
                     print(lt.data, "Maybe not U-Turn That We Don't Know DANGER")
 
-            # 6 all black, backward to find 1 line, then make a U-turn without append "B" value to the checkPoint
+            # 6 all black, backward to find 1 line, then make a U-turn without append "B" value to the LHR
             elif lt.data[0] < th_0 and lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 or lt.data[4] < th_4:
                 # go forward to check the line thick or not
                 mot.command("forward", 4, 0.2)
