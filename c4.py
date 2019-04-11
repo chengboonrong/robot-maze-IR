@@ -106,11 +106,13 @@ try:
           print(lt.data, 'stop and turn left')
           mot.command("forward", 5, 0.4)
           mot.command("left", 8, 0.6)
+          mot.command("forward", 5, 0.4)
           actions.pop()
         elif actions[-1] == "R":
           print(lt.data, 'stop and turn right')
           mot.command("forward", 5, 0.4)
           mot.command("right", 8, 0.6)
+          mot.command("forward", 5, 0.4)
           actions.pop()
         elif actions[-1] == "S": 
           print(lt.data, 'stop and go straight')
