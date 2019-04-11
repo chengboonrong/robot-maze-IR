@@ -65,7 +65,7 @@ try:
                     while lt.data[3] > th_3 and lt.data[2] > th_2:
                         mot.command("right", 4)
                     actions.append("B")
-                    LHR(actions, checkpoints)
+                    LHR(actions)
                     time.sleep(1)
                 elif lt.data[2] < th_2 and lt.data[1] > th_1 and lt.data[3] > th_3:
                     print(lt.data, "1 line detected it must be U-turn")
@@ -73,7 +73,7 @@ try:
                     while lt.data[3] > th_3 and lt.data[1] > th_1:
                         mot.command("right", 4)
                     actions.append("B")
-                    LHR(actions, checkpoints)
+                    LHR(actions)
                     time.sleep(1)
                 elif lt.data[3] < th_3 and lt.data[2] > th_2 and lt.data[1] > th_1:
                     print(lt.data, "1 line detected it must be U-turn")
@@ -81,7 +81,7 @@ try:
                     while lt.data[2] > th_2 and lt.data[1] > th_1:
                         mot.command("right", 4)
                     actions.append("B")
-                    LHR(actions, checkpoints)
+                    LHR(actions)
                     time.sleep(1)
                 else:
                     print(lt.data, "Paragraph 4.1")
@@ -100,12 +100,12 @@ try:
                 while lt.data[3] > th_3 and lt.data[2] > th_2:
                     mot.command("right", 4)
                 actions.append("R")
-                LHR(actions, checkpoints)
+                LHR(actions)
                 time.sleep(1)
             else:
                 print(lt.data, "There have straight path after right junction")
                 actions.append("S")
-                LHR(actions, checkpoints)
+                LHR(actions)
                 time.sleep(1)
 
         # P6 just check for left junction whether it become End or not
@@ -122,7 +122,7 @@ try:
                     time.sleep(0.5)
                     mot.command("left", 4)
                 actions.append("L")
-                LHR(actions, checkpoints)
+                LHR(actions)
                 time.sleep(1)
 
             elif lt.data[1] < th_1 and lt.data[2] < th_2 and lt.data[3] < th_3 and count >= 3:
